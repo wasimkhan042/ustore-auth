@@ -7,13 +7,13 @@ import (
 )
 
 type Subscription struct {
-	ID                int       `json:"id" structs:"id" bson:"_id" db:"id"`
-	StartTime         time.Time `json:"start_time" structs:"start_time" db:"start_time"`
-	EndTime           time.Time `json:"end_time" structs:"end_time" db:"end_time"`
-	SubscriptionPrice float64   `json:"subs_price" structs:"subs_price" db:"subs_price"`
-	Status            bool      `json:"status" structs:"status" db:"status"`
-	UserId            int       `json:"user_id" structs:"user_id" db:"user_id"`
-	ItemName          string    `json:"item_name" structs:"item_name" db:"item_name"`
+	ID                string    `json:"id" structs:"id" bson:"_id" db:"id"`
+	StartTime         time.Time `json:"start_time" structs:"start_time" bson:"start_time" db:"start_time"`
+	EndTime           time.Time `json:"end_time" structs:"end_time" bson:"end_time" db:"end_time"`
+	SubscriptionPrice float64   `json:"subs_price" structs:"subs_price" bson:"subs_price" db:"subs_price"`
+	Status            bool      `json:"status" structs:"status" bson:"status" db:"status"`
+	UserID            string    `json:"user_id" structs:"user_id" bson:"user_id" db:"user_id"`
+	ItemName          string    `json:"item_name" structs:"item_name" bson:"item_name" db:"item_name"`
 }
 
 // Map converts structs to a map representation

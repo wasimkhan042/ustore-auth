@@ -7,7 +7,7 @@ import (
 
 func TestUser_Map(t *testing.T) {
 	type fields struct {
-		ID           int
+		ID           string
 		FirstName    string
 		MiddleName   string
 		LastName     string
@@ -24,7 +24,7 @@ func TestUser_Map(t *testing.T) {
 		{
 			name: "success-TestUserMap",
 			fields: fields{
-				ID:           1234,
+				ID:           "1234",
 				FirstName:    "wasim",
 				MiddleName:   "",
 				LastName:     "khan",
@@ -34,7 +34,7 @@ func TestUser_Map(t *testing.T) {
 				ProfileImage: "default.png",
 			},
 			want: map[string]interface{}{
-				"id":            1234,
+				"id":            "1234",
 				"first_name":    "wasim",
 				"middle_name":   "",
 				"last_name":     "khan",
@@ -66,7 +66,7 @@ func TestUser_Map(t *testing.T) {
 
 func TestUser_Names(t *testing.T) {
 	type fields struct {
-		ID           int
+		ID           string
 		FirstName    string
 		MiddleName   string
 		LastName     string
@@ -83,7 +83,7 @@ func TestUser_Names(t *testing.T) {
 		{
 			name: "success-TestUserName",
 			fields: fields{
-				ID:           1234,
+				ID:           "1234",
 				FirstName:    "wasim",
 				MiddleName:   "",
 				LastName:     "khan",
@@ -117,7 +117,7 @@ func TestUser_Names(t *testing.T) {
 // Failure testCase
 func TestUser_Map1(t *testing.T) {
 	type fields struct {
-		ID           int
+		ID           string
 		FirstName    string
 		MiddleName   string
 		LastName     string
@@ -134,7 +134,7 @@ func TestUser_Map1(t *testing.T) {
 		{
 			name: "failed-TestUserMap",
 			fields: fields{
-				ID:           12364,
+				ID:           "12364",
 				FirstName:    "wasim",
 				MiddleName:   "",
 				LastName:     "khan",
@@ -144,7 +144,7 @@ func TestUser_Map1(t *testing.T) {
 				ProfileImage: "default.png",
 			},
 			want: map[string]interface{}{
-				"id":            1234,
+				"id":            "1234",
 				"first_name":    "wasim",
 				"middle_name":   "",
 				"last_name":     "khan",
@@ -177,7 +177,7 @@ func TestUser_Map1(t *testing.T) {
 // Failure testCase
 func TestUser_Names1(t *testing.T) {
 	type fields struct {
-		ID           int
+		ID           string
 		FirstName    string
 		MiddleName   string
 		LastName     string
@@ -194,7 +194,7 @@ func TestUser_Names1(t *testing.T) {
 		{
 			name: "failed-TestUserNames",
 			fields: fields{
-				ID:           1234,
+				ID:           "1234",
 				FirstName:    "wasim",
 				MiddleName:   "",
 				LastName:     "khan",

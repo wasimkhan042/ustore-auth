@@ -13,12 +13,12 @@ var (
 
 func TestSubscription_Map(t *testing.T) {
 	type fields struct {
-		ID                int
+		ID                string
 		StartTime         time.Time
 		EndTime           time.Time
 		SubscriptionPrice float64
 		Status            bool
-		UserId            int
+		UserID            string
 		ItemName          string
 	}
 	tests := []struct {
@@ -29,21 +29,21 @@ func TestSubscription_Map(t *testing.T) {
 		{
 			name: "subscription",
 			fields: fields{
-				ID:                123,
+				ID:                "123",
 				StartTime:         subscriptionTime,
 				EndTime:           subscriptionTime,
 				SubscriptionPrice: 1200.00,
 				Status:            true,
-				UserId:            1234,
+				UserID:            "1234",
 				ItemName:          "TV",
 			},
 			want: map[string]interface{}{
-				"id":         123,
+				"id":         "123",
 				"start_time": subscriptionTime,
 				"end_time":   subscriptionTime,
 				"subs_price": 1200.00,
 				"status":     true,
-				"user_id":    1234,
+				"user_id":    "1234",
 				"item_name":  "TV",
 			},
 		},
@@ -57,7 +57,7 @@ func TestSubscription_Map(t *testing.T) {
 				EndTime:           tt.fields.EndTime,
 				SubscriptionPrice: tt.fields.SubscriptionPrice,
 				Status:            tt.fields.Status,
-				UserId:            tt.fields.UserId,
+				UserID:            tt.fields.UserID,
 				ItemName:          tt.fields.ItemName,
 			}
 			if got := s.Map(); !reflect.DeepEqual(got, tt.want) {
@@ -69,12 +69,12 @@ func TestSubscription_Map(t *testing.T) {
 
 func TestSubscription_Names(t *testing.T) {
 	type fields struct {
-		ID                int
+		ID                string
 		StartTime         time.Time
 		EndTime           time.Time
 		SubscriptionPrice float64
 		Status            bool
-		UserId            int
+		UserID            string
 		ItemName          string
 	}
 	tests := []struct {
@@ -85,12 +85,12 @@ func TestSubscription_Names(t *testing.T) {
 		{
 			name: "subscription",
 			fields: fields{
-				ID:                123,
+				ID:                "123",
 				StartTime:         subscriptionTime,
 				EndTime:           subscriptionTime,
 				SubscriptionPrice: 1200.00,
 				Status:            true,
-				UserId:            1234,
+				UserID:            "1234",
 				ItemName:          "TV",
 			},
 			want: []string{
@@ -112,7 +112,7 @@ func TestSubscription_Names(t *testing.T) {
 				EndTime:           tt.fields.EndTime,
 				SubscriptionPrice: tt.fields.SubscriptionPrice,
 				Status:            tt.fields.Status,
-				UserId:            tt.fields.UserId,
+				UserID:            tt.fields.UserID,
 				ItemName:          tt.fields.ItemName,
 			}
 			if got := s.Names(); !reflect.DeepEqual(got, tt.want) {

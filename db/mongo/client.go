@@ -11,13 +11,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github/wasimkhan042/uStore-Auth/config"
-	"github/wasimkhan042/uStore-Auth/db"
-	"github/wasimkhan042/uStore-Auth/models"
+	"github/wasimkhan042/ustore-auth/config"
+	"github/wasimkhan042/ustore-auth/db"
+	"github/wasimkhan042/ustore-auth/models"
 )
 
 const (
-	userCollection  = "user"
+	userCollection         = "user"
 	subscriptionCollection = "subscription"
 )
 
@@ -42,7 +42,7 @@ func NewMongoClient(conf db.Option) (db.DataStore, error) {
 	return &client{conn: cli}, nil
 }
 
-// SignUp stores new user details in 'user' collection
+// SignUp stores new user details in 'user' collection.
 func (m client) SignUp(userInfo *models.User) error {
 	if _, err := m.GetProfile(userInfo.Email); err != nil {
 		userInfo.ID = guuid.NewV4().String()
@@ -58,7 +58,7 @@ func (m client) SignUp(userInfo *models.User) error {
 	return wraperrors.New("User already exists.")
 }
 
-// SignIn return password from db on successful call else error
+// SignIn return password from db on successful call else error.
 func (m client) SignIn(email string) (string, error) {
 	var user *models.User
 	collection := m.conn.Database(viper.GetString(config.DbName)).Collection(userCollection)
@@ -68,13 +68,13 @@ func (m client) SignIn(email string) (string, error) {
 			return "", wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return "", err
+		return "", nil
 	}
 
 	return user.Password, nil
 }
 
-// GetProfile return user details from db on successful call else error
+// GetProfile return user details from db on successful call else error.
 func (m client) GetProfile(email string) (*models.User, error) {
 	var user *models.User
 	collection := m.conn.Database(viper.GetString(config.DbName)).Collection(userCollection)
@@ -84,17 +84,17 @@ func (m client) GetProfile(email string) (*models.User, error) {
 			return nil, wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return nil, err
+		return user, nil
 	}
 
 	return user, nil
 }
 
-// SubscribeItem add user subscribed item details in the 'subscription' collection
+// SubscribeItem add user subscribed item details in the 'subscription' collection.
 func (m client) SubscribeItem(email string, subscriptionInfo *models.Subscription) error {
 	subscriptionInfo.ID = guuid.NewV4().String()
 
-	user, err:= m.GetProfile(email)
+	user, err := m.GetProfile(email)
 	if err != nil {
 		return wraperrors.Wrap(err, "failed to retrieve user details")
 	}
@@ -109,7 +109,7 @@ func (m client) SubscribeItem(email string, subscriptionInfo *models.Subscriptio
 	return nil
 }
 
-// ListSubscription return slice of given user subscriptions on successful call
+// ListSubscription return slice of given user subscriptions on successful call.
 func (m client) ListSubscription(email string) ([]*models.Subscription, error) {
 	var subscription []*models.Subscription
 

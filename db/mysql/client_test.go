@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github/wasimkhan042/uStore-Auth/db"
-	"github/wasimkhan042/uStore-Auth/models"
+	"github/wasimkhan042/ustore-auth/db"
+	"github/wasimkhan042/ustore-auth/models"
 )
 
 // The tests are written in a sequence, testing all functions of mysql/client file.
@@ -15,7 +15,7 @@ import (
 // are testing single entry.
 
 // connection initiation with mysql
-func mysqlConnection () (db.DataStore, error) {
+func mysqlConnection() (db.DataStore, error) {
 	os.Setenv("DB_PORT", "3306")
 	os.Setenv("DB_HOST", "localhost")
 	os.Setenv("DB_USER", "simsim")
@@ -39,12 +39,12 @@ func Test_client_SignUp(t *testing.T) {
 		{
 			name: "success - added user in db",
 			args: args{user: &models.User{
-				FirstName: "Wasim",
-				MiddleName: "",
-				LastName: "Khan",
-				Email: "wk@gmail.com",
-				Username: "wk",
-				Password: "password",
+				FirstName:    "Wasim",
+				MiddleName:   "",
+				LastName:     "Khan",
+				Email:        "wk@gmail.com",
+				Username:     "wk",
+				Password:     "password",
 				ProfileImage: "image.png",
 			}},
 			wantErr: false,
@@ -52,9 +52,9 @@ func Test_client_SignUp(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c,_ := mysqlConnection ()
+			c, _ := mysqlConnection()
 
-			err:= c.SignUp(tt.args.user)
+			err := c.SignUp(tt.args.user)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("SignUp() error = %v, wantErr %v", err, tt.wantErr)
 			}
@@ -64,7 +64,7 @@ func Test_client_SignUp(t *testing.T) {
 
 // Testing on the data inserted in Test_client_Register function.
 func Test_client_SignIn(t *testing.T) {
-	c, _ := mysqlConnection ()
+	c, _ := mysqlConnection()
 
 	user := &models.User{
 		Email: "wk@gmail.com",
@@ -80,9 +80,9 @@ func Test_client_SignIn(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "success-get user password by email",
-			args: args{email: user.Email},
-			want: "password",
+			name:    "success-get user password by email",
+			args:    args{email: user.Email},
+			want:    "password",
 			wantErr: false,
 		},
 	}
@@ -104,12 +104,11 @@ func Test_client_SignIn(t *testing.T) {
 
 // Testing on the data inserted in Test_client_Register function.
 func Test_client_GetProfile(t *testing.T) {
-	c, _ := mysqlConnection ()
+	c, _ := mysqlConnection()
 	user := &models.User{
-		Email: "wk@gmail.com",
+		Email:    "wk@gmail.com",
 		Username: "wk",
 	}
-
 
 	type args struct {
 		email string
@@ -121,9 +120,9 @@ func Test_client_GetProfile(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "success-get user by email",
-			args: args{email: user.Email},
-			want: user,
+			name:    "success-get user by email",
+			args:    args{email: user.Email},
+			want:    user,
 			wantErr: false,
 		},
 	}
@@ -145,11 +144,11 @@ func Test_client_GetProfile(t *testing.T) {
 
 // Testing SubscribeItem for dummy data
 func Test_client_SubscribeItem(t *testing.T) {
-	c, _ := mysqlConnection ()
+	c, _ := mysqlConnection()
 
 	start_time := time.Now()
-	end_time := time.Now().AddDate(0,1,0)
-	user,_ := c.GetProfile("wk@gmail.com")
+	end_time := time.Now().AddDate(0, 1, 0)
+	user, _ := c.GetProfile("wk@gmail.com")
 	type args struct {
 		email        string
 		subscription *models.Subscription
@@ -162,14 +161,14 @@ func Test_client_SubscribeItem(t *testing.T) {
 		{
 			name: "success - added subscribed item in db",
 			args: args{subscription: &models.Subscription{
-				StartTime: start_time,
-				EndTime: end_time,
+				StartTime:         start_time,
+				EndTime:           end_time,
 				SubscriptionPrice: 1200,
-				Status: true,
-				UserID: user.ID,
-				ItemName: "TV",
+				Status:            true,
+				UserID:            user.ID,
+				ItemName:          "TV",
 			},
-			email: "wk@gmail.com"},
+				email: "wk@gmail.com"},
 			wantErr: false,
 		},
 	}
@@ -184,13 +183,13 @@ func Test_client_SubscribeItem(t *testing.T) {
 
 // Testing ListSubscription for inserted subscribedItem data
 func Test_client_ListSubscription(t *testing.T) {
-	c, _ := mysqlConnection ()
-	user,_ := c.GetProfile("wk@gmail.com")
+	c, _ := mysqlConnection()
+	user, _ := c.GetProfile("wk@gmail.com")
 
 	subscription := []*models.Subscription{
 		{ItemName: "TV",
-		 UserID: user.ID,
-			},
+			UserID: user.ID,
+		},
 	}
 
 	type args struct {
@@ -203,9 +202,9 @@ func Test_client_ListSubscription(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "success-get subscription detail by email",
-			args: args{email: user.Email},
-			want: subscription,
+			name:    "success-get subscription detail by email",
+			args:    args{email: user.Email},
+			want:    subscription,
 			wantErr: false,
 		},
 	}

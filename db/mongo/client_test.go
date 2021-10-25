@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github/wasimkhan042/uStore-Auth/db"
-	"github/wasimkhan042/uStore-Auth/models"
+	"github/wasimkhan042/ustore-auth/db"
+	"github/wasimkhan042/ustore-auth/models"
 )
 
 // connection initiation with mongodb
@@ -15,7 +15,7 @@ func mongoConnection() (db.DataStore, error) {
 	os.Setenv("DB_PORT", "27017")
 	os.Setenv("DB_HOST", "localhost")
 
-	dbStore, err :=NewMongoClient(db.Option{})
+	dbStore, err := NewMongoClient(db.Option{})
 	return dbStore, err
 }
 
@@ -140,8 +140,8 @@ func Test_client_SubscribeItem(t *testing.T) {
 	c, _ := mongoConnection()
 
 	startTime := time.Now()
-	endTime := time.Now().AddDate(0,1,0)
-	user,_ := c.GetProfile("wk@gmail.com")
+	endTime := time.Now().AddDate(0, 1, 0)
+	user, _ := c.GetProfile("wk@gmail.com")
 
 	type args struct {
 		email            string
@@ -156,14 +156,14 @@ func Test_client_SubscribeItem(t *testing.T) {
 		{
 			name: "success - added subscribed item in db",
 			args: args{subscriptionInfo: &models.Subscription{
-				StartTime: startTime,
-				EndTime: endTime,
+				StartTime:         startTime,
+				EndTime:           endTime,
 				SubscriptionPrice: 1200,
-				Status: true,
-				UserID: user.ID,
-				ItemName: "TV",
+				Status:            true,
+				UserID:            user.ID,
+				ItemName:          "TV",
 			},
-			email: "wk@gmail.com"},
+				email: "wk@gmail.com"},
 			wantErr: false,
 		},
 	}
@@ -180,7 +180,7 @@ func Test_client_SubscribeItem(t *testing.T) {
 // Testing ListSubscription for retrieving slice of given user subscription details
 func Test_client_ListSubscription(t *testing.T) {
 	c, _ := mongoConnection()
-	user,_ := c.GetProfile("wk@gmail.com")
+	user, _ := c.GetProfile("wk@gmail.com")
 
 	subscription := []*models.Subscription{
 		{
@@ -197,9 +197,9 @@ func Test_client_ListSubscription(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "success-get subscription detail by email",
-			args: args{email: user.Email},
-			want: subscription,
+			name:    "success-get subscription detail by email",
+			args:    args{email: user.Email},
+			want:    subscription,
 			wantErr: false,
 		},
 	}

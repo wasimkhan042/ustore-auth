@@ -3,7 +3,7 @@ package db
 import (
 	"log"
 
-	"github/wasimkhan042/uStore-Auth/models"
+	"github.com/wasimkhan042/ustore-auth/models"
 )
 
 // DataStore is an interface for query ops.

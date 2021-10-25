@@ -68,7 +68,7 @@ func (m client) SignIn(email string) (string, error) {
 			return "", wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return "", err
+		return "", nil
 	}
 
 	return user.Password, nil
@@ -84,7 +84,11 @@ func (m client) GetProfile(email string) (*models.User, error) {
 			return nil, wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
+<<<<<<< HEAD
 		return user, err
+=======
+		return user, nil
+>>>>>>> added scripts
 	}
 
 	return user, nil

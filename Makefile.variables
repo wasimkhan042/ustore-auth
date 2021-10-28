@@ -11,7 +11,7 @@ DOCKRUN := docker run --rm \
 	${DEV_IMAGE}
 
 DOCKTEST := docker run --rm \
-    -v ${ROOT}:/... \
-    --link ustore-auth-mysql:ustore-auth-mysql \
-    --link ustore-auth-mongo:ustore-auth-mongo \
+    -v ${ROOT}:/${PROJECT}/src/${IMPORT_PATH} \
+    --link ustore-auth-mongo-db:ustore-auth-mongo-db \
+    --link ustore-auth-mysql-db:ustore-auth-mysql-db \
     ${DEV_IMAGE}

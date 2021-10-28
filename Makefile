@@ -26,17 +26,14 @@ test: check db_prepare
 	${DOCKTEST} bash ./scripts/test.sh
 
 db_start: db_stop
-	@docker run --name ustore-auth-mysql-db -e MYSQL_ROOT_PASSWORD=Mypassword100 -p 48620:48620 -d mysql:5.6
-	@docker run --name ustore-auth-mongo-db -p 27015-27017:27015-27017 -d mongo:4.2.0
+	@docker run --name ustore-auth-mysql-db -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -p 3306:3306 -d mysql:5.6
+	@docker run --name ustore-auth-mongo-db -p 27017:27017 -d mongo:4.2.0
 
 db_prepare: db_start
 	@docker cp ustore.sql ustore-auth-mysql-db:ustore.sql
 	@echo "Executing databases...wait for 15 seconds"
 	@sleep 15
-	@docker exec -i ustore-auth-mysql-db sh -c 'mysql -uroot -pMypassword100 < ustore.sql'
+	@docker exec -i ustore-auth-mysql-db sh -c 'mysql -u root < ustore.sql'
 
 db_stop:
 	bash ./scripts/db_stop.sh
-
-codegen: prepare
-	${DOCKRUN} bash ./scripts/swagger.sh

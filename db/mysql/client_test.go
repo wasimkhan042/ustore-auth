@@ -1,10 +1,14 @@
 package mysql
 
 import (
+	"fmt"
 	"os"
 	"reflect"
-	"testing"
 	"time"
+
+	//	"reflect"
+	"testing"
+	//	"time"
 
 	"github.com/wasimkhan042/ustore-auth/db"
 	"github.com/wasimkhan042/ustore-auth/models"
@@ -17,8 +21,8 @@ import (
 // connection initiation with mysql
 func mysqlConnection() (db.DataStore, error) {
 	os.Setenv("DB_PORT", "3306")
-	os.Setenv("DB_HOST", "localhost")
-	os.Setenv("DB_USER", "simsim")
+	os.Setenv("DB_HOST", "ustore-auth-mysql-db")
+	os.Setenv("DB_USER", "root")
 
 	dbStore, err := NewMysqlClient(db.Option{})
 	return dbStore, err
@@ -26,14 +30,12 @@ func mysqlConnection() (db.DataStore, error) {
 
 // Testing register function with the given data
 func Test_client_SignUp(t *testing.T) {
-
 	type args struct {
 		user *models.User
 	}
 	tests := []struct {
 		name    string
 		args    args
-		want    string
 		wantErr bool
 	}{
 		{
@@ -52,9 +54,16 @@ func Test_client_SignUp(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c, _ := mysqlConnection()
-
-			err := c.SignUp(tt.args.user)
+			c, err := mysqlConnection()
+			if err != nil {
+				panic(fmt.Sprintf("errrrorrr %v", err))
+			}
+			if tt.args.user != nil {
+				fmt.Println("hello")
+				fmt.Println(tt.args.user)
+				err = c.SignUp(tt.args.user)
+				fmt.Println("hello")
+			}
 			if (err != nil) != tt.wantErr {
 				t.Errorf("SignUp() error = %v, wantErr %v", err, tt.wantErr)
 			}

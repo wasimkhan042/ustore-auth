@@ -1,19 +1,19 @@
 package mongo
 
 import (
+	"fmt"
+	"github.com/wasimkhan042/ustore-auth/db"
+	"github.com/wasimkhan042/ustore-auth/models"
 	"os"
 	"reflect"
 	"testing"
 	"time"
-
-	"github.com/wasimkhan042/ustore-auth/db"
-	"github.com/wasimkhan042/ustore-auth/models"
 )
 
 // connection initiation with mongodb
 func mongoConnection() (db.DataStore, error) {
 	os.Setenv("DB_PORT", "27017")
-	os.Setenv("DB_HOST", "localhost")
+	os.Setenv("DB_HOST", "ustore-auth-mongo-db")
 
 	dbStore, err := NewMongoClient(db.Option{})
 	return dbStore, err
@@ -57,7 +57,6 @@ func Test_client_SignUp(t *testing.T) {
 
 // Testing SignIn for retrieving signed-up user data
 func Test_client_SignIn(t *testing.T) {
-	c, _ := mongoConnection()
 
 	user := &models.User{
 		Email: "wk@gmail.com",
@@ -81,6 +80,10 @@ func Test_client_SignIn(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			c, err := mongoConnection()
+			if err != nil {
+				fmt.Println("mongo database connection issue")
+			}
 			got, err := c.SignIn(tt.args.email)
 
 			if (err != nil) != tt.wantErr {

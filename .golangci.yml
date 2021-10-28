@@ -131,6 +131,28 @@ linters:
     - wsl
     - godox
     - errcheck
+    - funlen
+    - gomnd
+    - godot
+    - testpackage
+    - goerr113
+    - gci
+    - gofumpt
+    - nlreturn
+    - exhaustive
+    - errorlint
+    - exhaustivestruct
+    - paralleltest
+    - tagliatelle
+    - wrapcheck
+    - tagliatelle
+    - exhaustive
+    - exhaustivestruct
+    - errorlint
+    - forbidigo
+    - maligned
+    - interfacer
+    - importas
   # disable-all: false
   # presets:
   #   - bugs

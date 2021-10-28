@@ -48,7 +48,7 @@ func (m client) SignUp(userInfo *models.User) error {
 		userInfo.ID = guuid.NewV4().String()
 		collection := m.conn.Database(viper.GetString(config.DbName)).Collection(userCollection)
 
-		if _, err := collection.InsertOne(context.TODO(), userInfo); err != nil {
+		if _, err := collection.InsertOne(context.TODO(), &userInfo); err != nil {
 			return wraperrors.Wrap(err, "failed to add user")
 		}
 
@@ -62,13 +62,12 @@ func (m client) SignUp(userInfo *models.User) error {
 func (m client) SignIn(email string) (string, error) {
 	var user *models.User
 	collection := m.conn.Database(viper.GetString(config.DbName)).Collection(userCollection)
-
 	if err := collection.FindOne(context.TODO(), bson.M{"email": email}).Decode(&user); err != nil {
 		if mongo.ErrNoDocuments != nil {
 			return "", wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return "", nil
+		return "", wraperrors.Wrap(err, "user document not found... Signin")
 	}
 
 	return user.Password, nil
@@ -84,11 +83,7 @@ func (m client) GetProfile(email string) (*models.User, error) {
 			return nil, wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-<<<<<<< HEAD
-		return user, err
-=======
-		return user, nil
->>>>>>> added scripts
+		return nil, wraperrors.Wrap(err, "user document not found... Signin")
 	}
 
 	return user, nil

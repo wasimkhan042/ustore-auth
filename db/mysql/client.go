@@ -30,13 +30,13 @@ func formatDSN() string {
 	cfg.DBName = viper.GetString(config.DbName)
 	cfg.ParseTime = true
 	cfg.User = viper.GetString(config.DbUser)
-	cfg.Passwd = viper.GetString(config.DbPass)
 	return cfg.FormatDSN()
 }
 
 // NewMysqlClient initializes a mysql database connection.
 func NewMysqlClient(conf db.Option) (db.DataStore, error) {
-	log().Info("initializing mysql connection")
+	uri := fmt.Sprintf("mysqldb://%s:%s", viper.GetString(config.DbHost), viper.GetString(config.DbPort))
+	log().Infof("initializing mysqldb: %s", uri)
 
 	cli, err := sqlx.Connect("mysql", formatDSN())
 	if err != nil {
@@ -45,21 +45,21 @@ func NewMysqlClient(conf db.Option) (db.DataStore, error) {
 	return &client{db: cli}, nil
 }
 
-// SignUp stores new user details in user table.
+// SignUp stores new user details in user table
 func (c *client) SignUp(user *models.User) error {
+	var err error
 	user.ID = guuid.NewV4().String()
 	names := user.Names()
-
-	if _, err := c.db.NamedExec(fmt.Sprintf(`INSERT INTO user (%s) VALUES(%s)`, strings.Join(names, ","), strings.Join(mkPlaceHolder(names, ":", func(name, prefix string) string {
+	if _, err = c.db.NamedExec(fmt.Sprintf(`INSERT INTO user (%s) VALUES(%s)`, strings.Join(names, ","), strings.Join(mkPlaceHolder(names, ":", func(name, prefix string) string {
 		return prefix + name
 	}), ",")), user); err != nil {
 		return wraperrors.Wrap(err, "failed to add user")
 	}
 
-	return nil
+	return err
 }
 
-// SignIn return password on successful call else error.
+// SignIn return password on successful call else error
 func (c *client) SignIn(email string) (string, error) {
 	var user models.User
 
@@ -68,13 +68,13 @@ func (c *client) SignIn(email string) (string, error) {
 			return "", wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return "", nil
+		return "", err
 	}
 
 	return user.Password, nil
 }
 
-// GetProfile return user details from db on successful call else error.
+// GetProfile return user details from db on successful call else error
 func (c *client) GetProfile(email string) (*models.User, error) {
 	var user models.User
 	if err := c.db.Get(&user, fmt.Sprintf(`SELECT * FROM user WHERE email='%s'`, email)); err != nil {
@@ -82,13 +82,13 @@ func (c *client) GetProfile(email string) (*models.User, error) {
 			return nil, wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return &user, nil
+		return nil, err
 	}
 
 	return &user, nil
 }
 
-// SubscribeItem add user subscribed item details on successful call else return error.
+// SubscribeItem add user subscribed item details on successful call else return error
 func (c *client) SubscribeItem(email string, subscription *models.Subscription) error {
 	subscription.ID = guuid.NewV4().String()
 
@@ -109,7 +109,7 @@ func (c *client) SubscribeItem(email string, subscription *models.Subscription) 
 	return nil
 }
 
-// ListSubscription return slice of given user subscriptions on successful call.
+// ListSubscription return slice of given user subscriptions on successful call
 func (c *client) ListSubscription(email string) ([]*models.Subscription, error) {
 	var subscription []*models.Subscription
 
@@ -123,7 +123,7 @@ func (c *client) ListSubscription(email string) ([]*models.Subscription, error) 
 			return subscription, wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return subscription, nil
+		return subscription, err
 	}
 
 	return subscription, nil

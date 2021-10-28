@@ -5,6 +5,6 @@ RUN apk add --no-cache \
         bash \
     && rm -f /var/cache/apk/*
 
-COPY ./ustore-auth /usr/local/bin/ustore-auth
+COPY bin/ustore-auth /usr/local/bin/ustore-auth
 
 CMD ["/usr/local/bin/ustore-auth"]

@@ -11,9 +11,9 @@ import (
 	guuid "github.com/satori/go.uuid"
 	"github.com/spf13/viper"
 
-	"github/wasimkhan042/ustore-auth/config"
-	"github/wasimkhan042/ustore-auth/db"
-	"github/wasimkhan042/ustore-auth/models"
+	"github.com/wasimkhan042/ustore-auth/config"
+	"github.com/wasimkhan042/ustore-auth/db"
+	"github.com/wasimkhan042/ustore-auth/models"
 )
 
 type client struct {

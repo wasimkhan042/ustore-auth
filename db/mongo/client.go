@@ -11,9 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
-	"github/wasimkhan042/ustore-auth/config"
-	"github/wasimkhan042/ustore-auth/db"
-	"github/wasimkhan042/ustore-auth/models"
+	"github.com/wasimkhan042/ustore-auth/config"
+	"github.com/wasimkhan042/ustore-auth/db"
+	"github.com/wasimkhan042/ustore-auth/models"
 )
 
 const (
@@ -68,7 +68,7 @@ func (m client) SignIn(email string) (string, error) {
 			return "", wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return "", nil
+		return "", err
 	}
 
 	return user.Password, nil
@@ -84,7 +84,7 @@ func (m client) GetProfile(email string) (*models.User, error) {
 			return nil, wraperrors.Wrap(err, "failed to fetch user....not found")
 		}
 
-		return user, nil
+		return user, err
 	}
 
 	return user, nil

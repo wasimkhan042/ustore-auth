@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github/wasimkhan042/ustore-auth/db"
-	"github/wasimkhan042/ustore-auth/models"
+	"github.com/wasimkhan042/ustore-auth/db"
+	"github.com/wasimkhan042/ustore-auth/models"
 )
 
 // connection initiation with mongodb

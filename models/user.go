@@ -4,18 +4,19 @@ import (
 	"github.com/fatih/structs"
 )
 
+// User model.
 type User struct {
 	ID           string `json:"id" structs:"id" bson:"_id" db:"id"`
-	FirstName    string `json:"first_name" structs:"first_name"bson:"first_name" db:"first_name"`
-	MiddleName   string `json:"middle_name" structs:"middle_name" bson:"middle_name" db:"middle_name"`
-	LastName     string `json:"last_name" structs:"last_name" bson:"last_name" db:"last_name"`
+	FirstName    string `json:"firstName" structs:"first_name" bson:"first_name" db:"first_name"`
+	MiddleName   string `json:"middleName" structs:"middle_name" bson:"middle_name" db:"middle_name"`
+	LastName     string `json:"lastName" structs:"last_name" bson:"last_name" db:"last_name"`
 	Email        string `json:"email" structs:"email" bson:"email" db:"email"`
 	Username     string `json:"username" structs:"username" bson:"username" db:"username"`
 	Password     string `json:"password" structs:"password" bson:"password" db:"password"`
-	ProfileImage string `json:"profile_image" structs:"profile_image" bson:"profile_image" db:"profile_image"`
+	ProfileImage string `json:"profileImage" structs:"profile_image" bson:"profile_image" db:"profile_image"`
 }
 
-// Map converts structs to a map representation
+// Map converts structs to a map representation.
 func (u *User) Map() map[string]interface{} {
 	return structs.Map(u)
 }

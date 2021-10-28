@@ -2,7 +2,7 @@ package config
 
 import "github.com/spf13/viper"
 
-//keys for database configuration.
+// keys for database configuration.
 const (
 	DbName = "db.name"
 	DbHost = "db.ip"

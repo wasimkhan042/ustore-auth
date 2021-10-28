@@ -10,7 +10,7 @@ import (
 type DataStore interface {
 	SignUp(userInfo *models.User) error
 	SignIn(email string) (string, error)
-	GetProfile( email string) (*models.User, error)
+	GetProfile(email string) (*models.User, error)
 	SubscribeItem(email string, subscriptionInfo *models.Subscription) error
 	ListSubscription(email string) ([]*models.Subscription, error)
 }

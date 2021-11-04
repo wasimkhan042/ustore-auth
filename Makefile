@@ -22,6 +22,9 @@ format: prepare
 check: prepare format
 	${DOCKRUN} bash ./scripts/check.sh
 
+todo:
+	${DOCKRUN} bash ./scripts/todo.sh
+
 test: check db_prepare
 	${DOCKTEST} bash ./scripts/test.sh
 
@@ -37,3 +40,6 @@ db_prepare: db_start
 
 db_stop:
 	bash ./scripts/db_stop.sh
+
+codegen: prepare
+	${DOCKRUN} bash ./scripts/goswagger.sh

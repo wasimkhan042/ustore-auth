@@ -1,0 +1,194 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "ustore-auth"
+host: "localhost:8080"
+basePath: "/v1"
+schemes:
+  - "http"
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+paths:
+  /signup:
+    post:
+      description: "To register a new user"
+      operationId: "signup"
+      tags:
+        - "signup"
+      parameters:
+        - in: 'body'
+          name: 'signup'
+          description: 'signup model'
+          required: true
+          schema:
+            $ref: '#/definitions/SignUp'
+      responses:
+        200:
+          description: Successful registeration
+          schema:
+            $ref: '#/definitions/SignUpResponse'
+        400:
+          description: Bad Request
+        404:
+          schema:
+            type: string
+          description: User not found
+        500:
+          schema:
+            type: string
+          description: Server error
+
+  /login:
+    post:
+      description: 'To authenticate user with token'
+      operationId: "login"
+      tags:
+        - "login"
+      parameters:
+        - in: 'body'
+          name: 'login'
+          required: true
+          description: "login model"
+          schema:
+            $ref: "#/definitions/Login"
+      responses:
+        200:
+          description: Successful login
+          schema:
+            $ref: '#/definitions/LoginSuccess'
+        400:
+          description: Bad Request
+        404:
+          schema:
+            type: string
+          description: User not found
+        500:
+          schema:
+            type: string
+          description: Server error
+
+  /user/profile:
+    get:
+      description: "To show user details"
+      operationId: "profile"
+      tags:
+        - "User"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: "Success response when item is added successfully"
+          schema:
+            $ref: "#/definitions/Profile"
+        400:
+          description: Bad Request
+        404:
+          description: User not found
+        500:
+          schema:
+            type: string
+          description: Server error
+
+  /user/items:
+    get:
+      description: "To show available items"
+      operationId: "useritmes"
+      tags:
+        - "User"
+      security:
+        - Bearer: [ ]
+      responses:
+        200:
+          description: "Success response when items are shown"
+          schema:
+            $ref: "#/definitions/UserProducts"
+        400:
+          description: Bad Request
+        404:
+          description: items not found
+        500:
+          schema:
+            type: string
+          description: Server error
+
+definitions:
+  SignUp:
+    type: object
+    required: [email,first_name,password,username]
+    properties:
+      first_name:
+        type: string
+      middle_name:
+        type: string
+      last_name:
+        type: string
+      email:
+        type: string
+      username:
+        type: string
+      password:
+        type: string
+      profile_image:
+        type: string
+  SignUpResponse:
+    type: object
+    properties:
+      success:
+        type: boolean
+      message:
+        type: string
+  Login:
+    type: object
+    required: [email,password]
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+  LoginSuccess:
+    type: object
+    properties:
+      success:
+        type: boolean
+      token:
+        type: string
+  Profile:
+    type: object
+    properties:
+      first_name:
+        type: string
+      middle_name:
+        type: string
+      last_name:
+        type: string
+      email:
+        type: string
+      username:
+        type: string
+      profile_image:
+        type: string
+  UserProducts:
+    type: array
+    items:
+      $ref: "#/definitions/UserProduct"
+  UserProduct:
+    type: object
+    properties:
+      item_name:
+        type: string
+      subs_price:
+        type: number
+      expiry_date:
+        type: string
+        format: date-time
+      remaining_time_in_days:
+        type: string

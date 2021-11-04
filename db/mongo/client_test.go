@@ -41,12 +41,16 @@ func Test_client_SignUp(t *testing.T) {
 				Password:     "password",
 				ProfileImage: "image.png",
 			}},
-			wantErr: true,
+			wantErr: false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c, _ := mongoConnection()
+			if err := c.DeleteUserByEmail(tt.args.userInfo.Email); err != nil {
+				t.Error("Failed to delete user.")
+			}
+
 			err := c.SignUp(tt.args.userInfo)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("SignUp() error = %v, wantErr %v", err, tt.wantErr)

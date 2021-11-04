@@ -56,14 +56,10 @@ func Test_client_SignUp(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			c, err := mysqlConnection()
 			if err != nil {
-				panic(fmt.Sprintf("errrrorrr %v", err))
+				panic(fmt.Sprintf("error= %v", err))
 			}
-			if tt.args.user != nil {
-				fmt.Println("hello")
-				fmt.Println(tt.args.user)
-				err = c.SignUp(tt.args.user)
-				fmt.Println("hello")
-			}
+
+			err = c.SignUp(tt.args.user)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("SignUp() error = %v, wantErr %v", err, tt.wantErr)
 			}

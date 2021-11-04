@@ -28,9 +28,14 @@ func init() {
 
 	// defaults
 	viper.SetDefault(DbName, "ustore")
-	viper.SetDefault(DbHost, "localhost")
-	viper.SetDefault(DbPort, "3306")
+	viper.SetDefault(DbHost, "ustore-auth-mongo-db")
+	viper.SetDefault(DbPort, "27017")
 
 	viper.SetDefault(ServerHost, "127.0.0.1")
 	viper.SetDefault(ServerPort, "8080")
 }
+
+var (
+	// JWTSecretKey for token.
+	JWTSecretKey = []byte("323123123123123")
+)

@@ -49,7 +49,7 @@ func (m client) SignUp(userInfo *models.User) error {
 		collection := m.conn.Database(viper.GetString(config.DbName)).Collection(userCollection)
 
 		if _, err := collection.InsertOne(context.TODO(), &userInfo); err != nil {
-			return wraperrors.Wrap(err, "failed to add user")
+			return wraperrors.Wrap(err, "failed to add user ... SignUp")
 		}
 
 		return nil
@@ -64,7 +64,7 @@ func (m client) SignIn(email string) (string, error) {
 	collection := m.conn.Database(viper.GetString(config.DbName)).Collection(userCollection)
 	if err := collection.FindOne(context.TODO(), bson.M{"email": email}).Decode(&user); err != nil {
 		if mongo.ErrNoDocuments != nil {
-			return "", wraperrors.Wrap(err, "failed to fetch user....not found")
+			return "", wraperrors.Wrap(err, "failed to fetch user....not found SignIn")
 		}
 
 		return "", wraperrors.Wrap(err, "user document not found... Signin")
@@ -129,4 +129,14 @@ func (m client) ListSubscription(email string) ([]*models.Subscription, error) {
 	}
 
 	return subscription, nil
+}
+
+// DeleteUserByEmail to remove user from userCollection
+func (m client) DeleteUserByEmail(email string) error {
+	collection := m.conn.Database(viper.GetString(config.DbName)).Collection(userCollection)
+	if _, err := collection.DeleteOne(context.TODO(), bson.M{"email": email}); err != nil {
+		return wraperrors.Wrap(err, "failed to delete user")
+	}
+
+	return nil
 }

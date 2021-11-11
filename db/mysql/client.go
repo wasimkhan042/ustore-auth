@@ -26,18 +26,18 @@ func init() {
 
 func formatDSN() string {
 	cfg := mysql.NewConfig()
+	cfg.Net = "tcp"
 	cfg.Addr = fmt.Sprintf("%s:%s", viper.GetString(config.DbHost), viper.GetString(config.DbPort))
 	cfg.DBName = viper.GetString(config.DbName)
 	cfg.ParseTime = true
 	cfg.User = viper.GetString(config.DbUser)
+	cfg.Passwd = viper.GetString(config.DbPass)
 	return cfg.FormatDSN()
 }
 
 // NewMysqlClient initializes a mysql database connection.
 func NewMysqlClient(conf db.Option) (db.DataStore, error) {
-	uri := fmt.Sprintf("mysqldb://%s:%s", viper.GetString(config.DbHost), viper.GetString(config.DbPort))
-	log().Infof("initializing mysqldb: %s", uri)
-
+	log().Info("initializing mysql connection: " + formatDSN())
 	cli, err := sqlx.Connect("mysql", formatDSN())
 	if err != nil {
 		return nil, wraperrors.Wrap(err, "failed to connect")
@@ -127,6 +127,14 @@ func (c *client) ListSubscription(email string) ([]*models.Subscription, error) 
 	}
 
 	return subscription, nil
+}
+
+// DeleteUserByEmail to remove user from user table
+func (c *client) DeleteUserByEmail(email string) error {
+	if _, err := c.db.Exec(fmt.Sprintf(`DELETE FROM user WHERE email= '%s'`, email)); err != nil {
+		return wraperrors.Wrap(err, "failed to delete user")
+	}
+	return nil
 }
 
 func mkPlaceHolder(names []string, prefix string, formatName func(name, prefix string) string) []string {

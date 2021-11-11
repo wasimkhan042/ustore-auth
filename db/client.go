@@ -13,6 +13,7 @@ type DataStore interface {
 	GetProfile(email string) (*models.User, error)
 	SubscribeItem(email string, subscriptionInfo *models.Subscription) error
 	ListSubscription(email string) ([]*models.Subscription, error)
+	DeleteUserByEmail(email string) error
 }
 
 // Option holds configuration for data store clients.
